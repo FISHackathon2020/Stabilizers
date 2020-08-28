@@ -7,3 +7,6 @@ app.config['SECRET_KEY'] = 'fjidoaspfhnsduiopfbdwuifnioapsfhjasd'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///static/todo.db'
 
 db = SQLAlchemy(app)
+
+from . import auth
+app.register_blueprint(auth.bp)
