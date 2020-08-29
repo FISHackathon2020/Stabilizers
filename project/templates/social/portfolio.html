@@ -6,9 +6,31 @@
 
 {% block content %}
   <div class="left">
-
+    <div class="profile">
+      <ul>
+        <li><h3>Name: {{ user['first'] + user['last'] }}</h3></li>
+        <li><h3>Email: {{ user['email'] }}</h3></li>
+        {% if student is not None %}
+          <li><h3>School: {{ student['school'] }}</h3></li>
+          {% if student['major'] is not None %}
+          <li><h3>Major: {{ student['major'] }}</h3></li>
+          {% end if %}
+        {% elif representative is not None %}
+          <li><h3>Company: {{ representative['ompany'] }}</h3></li>
+        {% end if %}
+        <li><h3>Bio: {{ user['bio'] }}</h3></li>
+      </ul>
+    </div>
+    <div>
+    {% if student is not None %}
+      <ul>
+        <li><a href="#">Experiences</a></li>
+        <li><a href="#">Ideas</a></li>
+      </ul>
+    {% end if %}
+    </div>
   </div>
-  <div class="right">
 
+  <div class="right">
   </div>
 {% endblock %}
