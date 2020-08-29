@@ -2,6 +2,16 @@
 <title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
+  <ul>
+    {% if g.user %}
+      <li><a href="/">Home</a></li>
+      <li><a href="/{{ g.user['id'] }}/portfolio">Portfolio</a></li>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+      <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+    {% endif %}
+  </ul>
 </nav>
 <section class="content">
     <header>
