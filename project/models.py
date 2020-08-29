@@ -11,7 +11,6 @@ class User(db.Model):
     suffix = db.Column(db.String(3), unique=False, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(42), unique=False, nullable=False)
-    type = db.Column(db.String(20), nullable=False)
 
     __mapper_args__ = {
         'polymorphic_identity': 'user_table',
@@ -20,7 +19,7 @@ class User(db.Model):
 
 class Student(User):
 
-    # __tablename__ = 'students'
+    __tablename__ = 'students'
 
     id = db.Column(db.Integer, db.ForeignKey('user_table.id'), primary_key=True)
     school = db.Column(db.String(200), unique=False, nullable=True)
@@ -31,11 +30,56 @@ class Student(User):
 
 class Representative(User):
 
-    # __tablename__ = 'representatives'
+    __tablename__ = 'representatives'
 
     id = db.Column(db.Integer, db.ForeignKey('user_table.id'), primary_key=True)
     company = db.Column(db.String(200), unique=False, nullable=False)
 
     __mapper_args__ = {
         'polymorphic_identity': 'representative'
+    }
+
+class Post(db.Model):
+
+    __tablename__ = 'posts'
+
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('user_table.id'))
+    title = db.Column(db.String(100), unique=False, nullable=False)
+    body = db.Column(db.String(500), unique=False, nullable=False)
+    #created timestamp
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'post_table',
+        'polymorphic_on': type
+    }
+
+class Experience(Post):
+
+    __tablename__ = 'experiences'
+
+    id = db.Column(db.Integer, db.ForeignKey('post_table.id'))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'experience'
+    }
+
+class Idea(Post):
+
+    __tablename__ = 'idea'
+
+    id = db.Column(db.Integer, db.ForeignKey('post_table.id'))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'idea'
+    }
+
+class Opportunity(Post):
+
+    __tablename__ = 'opportunity'
+
+    id = db.Column(db.Integer, db.ForeignKey('post_table.id'))
+
+    __mapper_args__ = {
+        'polymorphic_identity': 'opportunity'
     }
