@@ -10,7 +10,7 @@ social = Blueprint('social', __name__)
 def get_user(id):
     user = db.engine.execute(
         'SELECT first, last, email, bio'
-        '   FROM user u'
+        '   FROM users u'
         '   WHERE u.id = ?',
         (id,)
     ).fetchone()
@@ -23,7 +23,7 @@ def get_user(id):
 def get_student(id):
     student = db.engine.execute(
         'SELECT school, major'
-        '   FROM student s JOIN user u ON s.id = u.id'
+        '   FROM students s JOIN users u ON s.id = u.id'
         '   WHERE u.id = ?',
         (id,)
     ).fetchone()
@@ -33,7 +33,7 @@ def get_student(id):
 def get_representative(id):
     representative = db.engine.execute(
         'SELECT company'
-        '   FROM representative r JOIN user u ON r.id = u.id'
+        '   FROM representatives r JOIN users u ON r.id = u.id'
         '   WHERE u.id = ?',
         (id,)
     ).fetchone()
@@ -52,7 +52,7 @@ def portfolio(id):
 def feed():
     posts = db.engine.execute(
         'SELECT p.id, title, body, created, author_id, username'
-        '   FROM post p JOIN user u ON p.author_id = u.id'
+        '   FROM posts p JOIN users u ON p.author_id = u.id'
         '   ORDER BY created DESC'
     ).fetchall()
 
