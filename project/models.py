@@ -1,4 +1,5 @@
 from project import db
+import datetime
 
 class User(db.Model):
 
@@ -11,6 +12,7 @@ class User(db.Model):
     suffix = db.Column(db.String(3), unique=False, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(42), unique=False, nullable=False)
+    bio = db.Column(db.String(500), unique=False, nullable=True)
     type = db.Column(db.String(50))
 
     __mapper_args__ = {
@@ -27,6 +29,7 @@ class Student(User):
 
     id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     school = db.Column(db.String(200), unique=False, nullable=True)
+    major = db.Column(db.String(200), unique=False, nullable=True)
 
     __mapper_args__ = {
         'polymorphic_identity': 'student'
@@ -52,14 +55,14 @@ class Post(db.Model):
     title = db.Column(db.String(100), unique=False, nullable=False)
     body = db.Column(db.String(500), unique=False, nullable=False)
     type = db.Column(db.String(50))
-    created = db.Column(db.Date)
-    #created timestamp
+    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __mapper_args__ = {
         # 'polymorphic_identity': 'post_table',
         'polymorphic_on': db.case([
             (type == "EXP", "experience"),
-            (type == "IDEA", "idea")
+            (type == "IDEA", "idea"),
+            (type == "OPP", "opportunity")
         ], else_="idea"),
     }
 
@@ -75,7 +78,7 @@ class Experience(Post):
 
 class Idea(Post):
 
-    __tablename__ = 'idea'
+    __tablename__ = 'ideas'
 
     id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
 
@@ -85,7 +88,7 @@ class Idea(Post):
 
 class Opportunity(Post):
 
-    __tablename__ = 'opportunity'
+    __tablename__ = 'opportunities'
 
     id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
 

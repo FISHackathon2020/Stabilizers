@@ -15,49 +15,61 @@ def register():
         email = request.form['email']
         password = request.form['password']
         error = None
-        id = db.engine.execute('SELECT id FROM user WHERE email = ?', (email,))
+        id = db.engine.execute('SELECT id FROM users WHERE email = ?', (email,)).fetchone()
 
         if not email:
             error = 'Email is required.'
         elif not password:
             error = 'Password is required.'
         elif id is not None:
-            error = 'Email %s is already registered.'.format(email)
+            error = 'Email {} is already registered.'.format(email)
 
         if error is None:
             db.engine.execute(
-                'INSERT INTO user (email, password, first, last)'
+                'INSERT INTO users (email, password, first_name, last_name)'
                 '   values (?, ?, ?, ?)',
                 (email, password, first_name, last_name)
             )
             if email[-3:] == 'edu':
                 school = email[ email.find('@')+1 : email.find('.') ]
                 db.engine.execute(
-                    'INSERT INTO student (id, school) values (?, ?)',
+                    'INSERT INTO students (id, school) values (?, ?)',
                     (id, school,)
                 )
 
+            return redirect(url_for('auth.login'))
+
         flash(error)
+
     return render_template('auth/register.html')
 
 
-@auth.route('/login')
+@auth.route('/login', methods=('POST', 'GET'))
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        error = None
-        user = db.engine.execute(
-            'SELECT *  FROM user WHERE email = ?', (email,)
-        )
+	if request.method == 'POST':
+		email = request.form['email']
+		password = request.form['password']
+		error = None
+		user = db.engine.execute('SELECT *  FROM users WHERE email = ?', (email,)).fetchone()
 
-    if user is None or not user['password', password]:
-        error = 'Incorrect email or password.'
+		if user is None or user['password'] != password:
+			error = 'Incorrect email or password.'
 
-    if error is None:
-        session.clear()
-        session['user_id'] = user['id']
-        return redirect(url_for('index'))
+		if error is None:
+			session.clear()
+			session['user_id'] = user['id']
+			return redirect(url_for('social.feed'))
 
-    flash(error)
-    return render_template('auth/login.html')
+		flash(error)
+	return render_template('auth/login.html')
+
+@auth.before_app_request
+def load_logged_in_user():
+	user_id = session.get('user_id')
+
+	if user_id is None:
+		g.user = None
+	else:
+		g.user = db.engine.execute(
+			'SELECT * FROM users WHERE id = ?', (user_id,)
+		).fetchone()

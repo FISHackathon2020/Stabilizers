@@ -9,7 +9,7 @@ social = Blueprint('social', __name__)
 
 def get_user(id):
     user = db.engine.execute(
-        'SELECT first, last, email, bio'
+        'SELECT id, first_name, last_name, email, bio'
         '   FROM users u'
         '   WHERE u.id = ?',
         (id,)
@@ -40,7 +40,7 @@ def get_representative(id):
 
     return representative
 
-@social.route('/int:id/portfolio', methods=['GET'])
+@social.route('/portfolio/<int:id>', methods=['GET'])
 def portfolio(id):
     user = get_user(id)
     student = get_student(id)
@@ -51,9 +51,61 @@ def portfolio(id):
 @social.route('/', methods=['GET'])
 def feed():
     posts = db.engine.execute(
-        'SELECT p.id, title, body, created, author_id, username'
+        'SELECT p.id, title, body, created, author_id'
         '   FROM posts p JOIN users u ON p.author_id = u.id'
         '   ORDER BY created DESC'
     ).fetchall()
 
     return render_template('social/feed.html', posts=posts)
+
+@social.route('/ideas/<int:id>', methods=['GET'])
+def ideas(id):
+    posts = db.engine.execute(
+        'SELECT id, title, body, created, author_id'
+        '   FROM posts WHERE type = ?',('idea',)
+    ).fetchall()
+
+    return render_template('social/feed.html', posts=posts)
+
+@social.route('/experiences/<int:id>', methods=['GET'])
+def expereinces(id):
+    posts = db.engine.execute(
+        'SELECT id, title, body, created, author_id'
+        '   FROM posts WHERE type = ?',('expereince',)
+    ).fetchall()
+
+    return render_template('social/feed.html', posts=posts)
+
+@social.route('/opportunities/<int:id>', methods=['GET'])
+def opportunities(id):
+    posts = db.engine.execute(
+        'SELECT id, title, body, created, author_id'
+        '   FROM posts WHERE type = ?',('opportunity',)
+    ).fetchall()
+    return render_template('social/feed.html', posts=posts)
+
+@social.route('/create', methods=['POST','GET'])
+def create():
+    student = get_student(g.user['id'])
+    representative = get_representative(g.user['id'])
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        option = request.form['options']
+        error = None
+
+        if not title:
+            error = 'Title is required'
+
+        if error is not None:
+                flash(error)
+        else:
+            db.engine.execute(
+                'INSERT INTO posts (title, body, author_id, type)'
+                '   VALUES (?, ?, ?, ?)',
+                (title, body, g.user['id'], option)
+            )
+
+            return redirect(url_for('social.feed'))
+
+    return render_template('social/create.html', student=student, representative=representative)
