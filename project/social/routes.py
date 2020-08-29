@@ -8,7 +8,7 @@ from project import db
 social = Blueprint('social', __name__)
 
 def get_user(id):
-        user = db.execute(
+    user = db.execute(
         'SELECT first, last, email, bio'
         '   FROM user u'
         '   WHERE u.id = ?',
@@ -21,7 +21,7 @@ def get_user(id):
     return user
 
 def get_student(id):
-        student = db.execute(
+    student = db.execute(
         'SELECT school, major'
         '   FROM student s JOIN user u ON s.id = u.id'
         '   WHERE u.id = ?',
@@ -31,7 +31,7 @@ def get_student(id):
     return student
 
 def get_representative(id):
-        representative = db.execute(
+    representative = db.execute(
         'SELECT company'
         '   FROM representative r JOIN user u ON r.id = u.id'
         '   WHERE u.id = ?',
@@ -40,7 +40,7 @@ def get_representative(id):
 
     return representative
 
-@social.route('/int:id/portfolio', methods=('GET'))
+@social.route('/int:id/portfolio', methods=['GET'])
 def portfolio(id):
     user = get_user(id)
     student = get_student(id)
@@ -48,7 +48,7 @@ def portfolio(id):
 
     return render_template('social/portfolio.html', user=user, student=student, representative=representative)
 
-@social.route('/', methods=('GET'))
+@social.route('/', methods=['GET'])
 def feed():
     posts = db.execute(
         'SELECT p.id, title, body, created, author_id, username'
