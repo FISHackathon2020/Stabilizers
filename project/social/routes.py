@@ -8,7 +8,7 @@ from project import db
 social = Blueprint('social', __name__)
 
 def get_user(id):
-    user = db.execute(
+    user = db.engine.execute(
         'SELECT first, last, email, bio'
         '   FROM user u'
         '   WHERE u.id = ?',
@@ -21,7 +21,7 @@ def get_user(id):
     return user
 
 def get_student(id):
-    student = db.execute(
+    student = db.engine.execute(
         'SELECT school, major'
         '   FROM student s JOIN user u ON s.id = u.id'
         '   WHERE u.id = ?',
@@ -31,7 +31,7 @@ def get_student(id):
     return student
 
 def get_representative(id):
-    representative = db.execute(
+    representative = db.engine.execute(
         'SELECT company'
         '   FROM representative r JOIN user u ON r.id = u.id'
         '   WHERE u.id = ?',
@@ -50,7 +50,7 @@ def portfolio(id):
 
 @social.route('/', methods=['GET'])
 def feed():
-    posts = db.execute(
+    posts = db.engine.execute(
         'SELECT p.id, title, body, created, author_id, username'
         '   FROM post p JOIN user u ON p.author_id = u.id'
         '   ORDER BY created DESC'

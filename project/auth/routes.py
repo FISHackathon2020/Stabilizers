@@ -7,7 +7,7 @@ from project import db
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 #Should be able to create student and representative acounts
-@auth.route('/register', methods=('POST', 'GET'))
+@auth.route('/register', methods=('POST','GET'))
 def register():
     if request.method == 'POST':
         first_name = request.form['first']
@@ -15,7 +15,7 @@ def register():
         email = request.form['email']
         password = request.form['password']
         error = None
-        id = db.execute('SELECT id FROM user WHERE email = ?', (email,))
+        id = db.engine.execute('SELECT id FROM user WHERE email = ?', (email,))
 
         if not email:
             error = 'Email is required.'
@@ -25,16 +25,16 @@ def register():
             error = 'Email %s is already registered.'.format(email)
 
         if error is None:
-            db.execute(
+            db.engine.execute(
                 'INSERT INTO user (email, password, first, last)'
                 '   values (?, ?, ?, ?)',
                 (email, password, first_name, last_name)
             )
             if email[-3:] == 'edu':
                 school = email[ email.find('@')+1 : email.find('.') ]
-                db.execute(
+                db.engine.execute(
                     'INSERT INTO student (id, school) values (?, ?)',
-                    (id, school)
+                    (id, school,)
                 )
 
         flash(error)
@@ -47,7 +47,7 @@ def login():
         email = request.form['email']
         password = request.form['password']
         error = None
-        user = db.execute(
+        user = db.engine.execute(
             'SELECT *  FROM user WHERE email = ?', (email,)
         )
 
