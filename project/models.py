@@ -52,6 +52,7 @@ class Post(db.Model):
     title = db.Column(db.String(100), unique=False, nullable=False)
     body = db.Column(db.String(500), unique=False, nullable=False)
     type = db.Column(db.String(50))
+    created = db.Column(db.Date)
     #created timestamp
 
     __mapper_args__ = {
