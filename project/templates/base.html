@@ -3,11 +3,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <nav>
   <ul>
-    {% if g.user %}
+    {% if g.user != None %}
       <li><a href="/">Home</a></li>
       <li><a href="/portfolio/{{ g.user['id'] }}">Portfolio</a></li>
       <li><a href="/create">Create</a></li>
-      <li><a href="#">Log Out</a></li>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
     {% else %}
       <li><a href="{{ url_for('auth.register') }}">Register</a></li>
       <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
