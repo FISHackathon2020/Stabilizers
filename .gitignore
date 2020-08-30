@@ -1,4 +1,7 @@
 project/site.db
+.DS_Store
+project/templates/.DS_Store
+project/.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

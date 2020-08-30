@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}{{ user['first_name'] }}' Portfolio{% endblock%}</h1>
+  <h1>{% block title %}{{ user['first_name'] }}'s Portfolio{% endblock%}</h1>
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
           <li><h3>Major: {{ student['major'] }}</h3></li>
           {% endif %}
         {% elif representative != None %}
-          <li><h3>Company: {{ representative['ompany'] }}</h3></li>
+          <li><h3>Company: {{ representative['company'] }}</h3></li>
         {% endif %}
         <li><h3>Bio: {{ user['bio'] }}</h3></li>
       </ul>

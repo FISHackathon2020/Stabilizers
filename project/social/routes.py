@@ -51,7 +51,7 @@ def portfolio(id):
 @social.route('/', methods=['GET'])
 def feed():
     posts = db.engine.execute(
-        'SELECT p.id, title, body, created, author_id'
+        'SELECT p.id, title, body, created, author_id, first_name, option'
         '   FROM posts p JOIN users u ON p.author_id = u.id'
         '   ORDER BY created DESC'
     ).fetchall()
@@ -61,8 +61,8 @@ def feed():
 @social.route('/ideas/<int:id>', methods=['GET'])
 def ideas(id):
     posts = db.engine.execute(
-        'SELECT id, title, body, created, author_id'
-        '   FROM posts WHERE type = ?',('idea',)
+        'SELECT p.id, title, body, created, author_id, first_name, option'
+        '   FROM posts p JOIN users u ON p.author_id = u.id WHERE option = ?',('option',)
     ).fetchall()
 
     return render_template('social/feed.html', posts=posts)
@@ -70,8 +70,8 @@ def ideas(id):
 @social.route('/experiences/<int:id>', methods=['GET'])
 def expereinces(id):
     posts = db.engine.execute(
-        'SELECT id, title, body, created, author_id'
-        '   FROM posts WHERE type = ?',('expereince',)
+        'SELECT p.id, title, body, created, author_id, first_name, option'
+        '   FROM posts p JOIN users u ON p.author_id = u.id WHERE option = ?',('experience',)
     ).fetchall()
 
     return render_template('social/feed.html', posts=posts)
@@ -79,8 +79,8 @@ def expereinces(id):
 @social.route('/opportunities/<int:id>', methods=['GET'])
 def opportunities(id):
     posts = db.engine.execute(
-        'SELECT id, title, body, created, author_id'
-        '   FROM posts WHERE type = ?',('opportunity',)
+        'SELECT p.id, title, body, created, author_id, first_name, option'
+        '   FROM posts p JOIN users u ON p.author_id = u.id WHERE option = ?',('opportunity',)
     ).fetchall()
     return render_template('social/feed.html', posts=posts)
 
@@ -101,7 +101,7 @@ def create():
                 flash(error)
         else:
             db.engine.execute(
-                'INSERT INTO posts (title, body, author_id, type)'
+                'INSERT INTO posts (title, body, author_id, option)'
                 '   VALUES (?, ?, ?, ?)',
                 (title, body, g.user['id'], option)
             )

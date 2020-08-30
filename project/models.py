@@ -54,15 +54,15 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String(100), unique=False, nullable=False)
     body = db.Column(db.String(500), unique=False, nullable=False)
-    type = db.Column(db.String(50))
+    option = db.Column(db.String(50))
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
     __mapper_args__ = {
         # 'polymorphic_identity': 'post_table',
         'polymorphic_on': db.case([
-            (type == "EXP", "experience"),
-            (type == "IDEA", "idea"),
-            (type == "OPP", "opportunity")
+            (option == "EXP", "experience"),
+            (option == "IDEA", "idea"),
+            (option == "OPP", "opportunity")
         ], else_="idea"),
     }
 

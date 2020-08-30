@@ -10,7 +10,7 @@
         <header>
           <div>
             <h1>{{ post['title'] }}</h1>
-            <div class="about">by <a href="/portfolio/{{ post['author_id'] }}">Name</a> on {{ post['created'] }}</div>
+            <div class="about">{{ post['option'] }} by <a href="/portfolio/{{ post['author_id'] }}">{{ post['first_name'] }}</a> on {{ post['created'] }}</div>
           </div>
         </header>
         <p class="body">{{ post['body'] }}</p>
