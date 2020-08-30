@@ -27,6 +27,10 @@
         <li><a href="/experiences/{{ user['id'] }}">Experiences</a></li>
         <li><a href="/ideas/{{ user['id'] }}">Ideas</a></li>
       </ul>
+    {% else %}
+      <ul>
+        <li><a href="/opportunities/{{ user['id'] }}">Opportunities</a></li>
+      </ul>
     {% endif %}
     </div>
   </div>

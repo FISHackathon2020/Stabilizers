@@ -13,7 +13,7 @@
     {% if student != None %}
       <input type="radio" name="options" value="idea">Idea</input>
       <input type="radio" name="options" value="experience">Experience</input>
-    {% elif representative != None %}
+    {% else %}
       <input type="radio" name="options" value="opportunity">Opportunity</input>
     {% endif %}
     <input type="submit" value="Save">
