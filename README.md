@@ -6,7 +6,7 @@ The nature of student engagement has changed. As a company that values the talen
 
 ## Solution
 ### EduConnect
-EduConnect is a platform which bridges the gap between students and recruiters. Today, the most popular platform for acquiring a job is LinkedIn. LinkedIn has the concept of connections implemented, but not the practice. This is where EduConnect comes in. EduConnect allows students and hobbyists looking for internships, co-op, or part and full time jobs to find and interact with recruiters from across the globe. To do this we collect basic information about the student
+[EduConnect](http://fishackathon.pythonanywhere.com/) is a platform which bridges the gap between students and recruiters. Today, the most popular platform for acquiring a job is LinkedIn. LinkedIn has the concept of connections implemented, but not the practice. This is where EduConnect comes in. EduConnect allows students and hobbyists looking for internships, co-op, or part and full time jobs to find and interact with recruiters from across the globe. To do this we collect basic information about the student
 
 #### Core Features
  - Video calls for chats, interviews, and general discussion
