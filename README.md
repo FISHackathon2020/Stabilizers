@@ -27,18 +27,18 @@ EduConnect is a platform which bridges the gap between students and recruiters. 
 2. Run the Git installer: [Git](https://github.com/git-for-windows/git/releases/download/v2.28.0.windows.1/Git-2.28.0-64-bit.exe)
 3. Question where you are in life and where you want to go.
 4. Clone the repository with the following commands:
-```
-git clone https://github.com/FISHackathon2020/Stabilizers.git
-cd Stabilizers
-```
+    ```
+    git clone https://github.com/FISHackathon2020/Stabilizers.git
+    cd Stabilizers
+    ```
 5. Run the following commands:
-```
-pip install pipenv
-pipenv shell
-pipenv update
-```
+    ```
+    pip install pipenv
+    pipenv shell
+    pipenv update
+    ```
 6. Run the program
-```
-python run.py
-```
+    ```
+    python run.py
+    ```
 7. Celebrate !!!
